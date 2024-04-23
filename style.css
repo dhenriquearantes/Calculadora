@@ -1,0 +1,23 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body{
+  position: relative;
+}
+
+.display {
+  width: 100%;
+}
+
+.calculator-container {
+  position: absolute;
+  width: 200px;
+
+}
+
+.options {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
