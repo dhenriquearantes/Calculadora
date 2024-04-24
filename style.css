@@ -4,20 +4,96 @@
 }
 
 body{
-  position: relative;
 }
 
-.display {
-  width: 100%;
-}
+
 
 .calculator-container {
-  position: absolute;
-  width: 200px;
-
+  width: 300px;
+  height: 100vh;
 }
 
+#display {
+  width: 100%;
+  height: 148px;
+
+  text-align: end;
+  font-size: 26px;
+
+  padding-bottom: 0;
+  padding-top: 100px;
+  box-sizing: border-box;
+
+  
+}
+
+
 .options {
+  height: 168px;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  /* grid-template-columns: repeat(4, 1fr); */
+  grid-template-areas: 
+  "A B C D"
+  "E F G H"
+  "I J K L"
+  "M N O P"
+  "Q R S P";
+  
+}
+.options button:nth-child(1) {
+  grid-area: A;
+}
+.options button:nth-child(2) {
+  grid-area: B;
+}
+.options button:nth-child(3) {
+  grid-area: C;
+}
+.options button:nth-child(4) {
+  grid-area: D;
+}
+.options button:nth-child(5) {
+  grid-area: E;
+}
+.options button:nth-child(6) {
+  grid-area: F;
+}
+.options button:nth-child(7) {
+  grid-area: G;
+}
+.options button:nth-child(8) {
+  grid-area: H;
+}
+.options button:nth-child(9) {
+  grid-area: I;
+}
+.options button:nth-child(10) {
+  grid-area: J;
+}
+.options button:nth-child(11) {
+  grid-area: K;
+}
+.options button:nth-child(12) {
+  grid-area: L;
+}
+.options button:nth-child(13) {
+  grid-area: M;
+}
+.options button:nth-child(14) {
+  grid-area: N;
+}
+.options button:nth-child(15) {
+  grid-area: O;
+}
+.options button:nth-child(16) {
+  grid-area: P;
+}
+.options button:nth-child(17) {
+  grid-area: Q;
+}
+.options button:nth-child(18) {
+  grid-area: R;
+}
+.options button:nth-child(19) {
+  grid-area: S;
 }

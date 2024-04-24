@@ -15,24 +15,24 @@
     </div>
     <div class="options">
       <button id="clear">AC</button>
-      <button id="del">DEL</button>
-      <button>/</button>
-      <button>X</button>
+      <button id="del"><img src="/imgs/backspace.svg" alt=""></button>
+      <button onclick="operator('/')" value="/" >/</button>
+      <button onclick="operator('*')">X</button>
       <button onclick="inputNum(7)">7</button>
       <button onclick="inputNum(8)">8</button>
       <button onclick="inputNum(9)">9</button>
-      <button>-</button>
+      <button onclick="operator('-')">-</button>
       <button onclick="inputNum(4)">4</button>
       <button onclick="inputNum(5)">5</button>
       <button onclick="inputNum(6)">6</button>
-      <button>+</button>
+      <button onclick="operator('+')">+</button>
       <button onclick="inputNum(1)">1</button>
       <button onclick="inputNum(2)">2</button>
       <button onclick="inputNum(3)">3</button>
-      <button id="igual">=</button>
-      <button>%</button>
+      <button class="btn-equals-grid" onclick="calculate(valorAcumulado)">=</button>
+      <button onclick="operator('%')"value="%" id="porcent">%</button>
       <button onclick="inputNum(0)">0</button>
-      <button>.</button>
+      <button onclick="inputNum('.')">.</button>
     </div>
   </div>
   
