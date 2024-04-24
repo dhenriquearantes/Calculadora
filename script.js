@@ -15,41 +15,71 @@ function inputNum(valor) {
 
 document.getElementById("clear").addEventListener("click",() => {
   valorAcumulado = "";
+  state = 1;
+  valueOne = "";
+  valueTwo = "";
+  operador = "";
   visor.setAttribute("value", valorAcumulado);
 })
 
 document.getElementById("del").addEventListener("click",() => {
-  valorAcumulado = valorAcumulado.slice(0, -1);
-  visor.setAttribute("value", valorAcumulado)
+    valorAcumulado = valorAcumulado.slice(0, -1);
+    visor.setAttribute("value", valorAcumulado)
 })
 
 function operator(valor) {
-  let resultado = 0;
 
   if (valor == '+' || '-' || '*' || '/' || '%') {
     operador = valor;
     valueOne = valorAcumulado;
     state = 2;
+    valorAcumulado = "";
+    visor.setAttribute("value", valorAcumulado)
   }  
+}
 
-  switch (operador) {
-    case "+":
-      console.log("yesy");
-      break;
-    case "-":
-      resultado = Number(valorArray[0]) - Number(valorArray[2])
-      break
-    case "*":
-      resultado = Number(valorArray[0]) * Number(valorArray[2])
-      break     
-    case "/":
-      resultado = Number(valorArray[0]) / Number(valorArray[2])
-      break       
-    case "%":
-      resultado = 100 * Number(valorArray[0]) / Number(valorArray[2])
-      break            
-    default:
-      break;
+function calculate() {
+  let result = ""
+
+  if (state == 2) {
+    valueTwo = valorAcumulado;
+
+    switch (operador) {
+      case "+":
+        result = Number(valueOne) + Number(valueTwo)
+        result = result.toFixed(2)
+        visor.setAttribute("value", result)
+        break;
+      case "-":
+        result = Number(valueOne) - Number(valueTwo)
+        result = result.toFixed(2)
+
+        visor.setAttribute("value", result)
+        break
+      case "*":
+        result = Number(valueOne) * Number(valueTwo)
+        result = result.toFixed(2)
+
+        visor.setAttribute("value", result)
+        break     
+      case "/":
+        result = Number(valueOne) / Number(valueTwo)
+        result = result.toFixed(2)
+        visor.setAttribute("value", result)
+        break       
+      case "%":
+        result = 100 / (Number(valueOne) * Number(valueTwo))
+        visor.setAttribute("value", result)
+        break            
+      default:
+        break;
+    }
+
+    valorAcumulado = result;
+    state = 1;
+
   }
+
+
     
 }
