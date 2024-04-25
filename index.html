@@ -6,36 +6,44 @@
   <title>Calculadora</title>
 
   <link rel="stylesheet" href="style.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+
+
 </head>
 <body>
 
   <div class="calculator-container">
-    <div class="display">
-      <input id="display" type="text" value="0" readonly>
+    <div class="display-container">
+      <div class="display">
+        <input id="display" type="text" value="" placeholder="0" disabled readonly>
+      </div>
     </div>
     <div class="options">
       <button id="clear">AC</button>
-      <button id="del"><img src="/imgs/backspace.svg" alt=""></button>
-      <button onclick="operator('/')" value="/" >/</button>
-      <button onclick="operator('*')">X</button>
+      <button id="del" ><img src="/imgs/backspace.svg" alt=""></button>
+      <button class="operadores" onclick="operator('/')" value="/" >&#247</button>
+      <button class="operadores" onclick="operator('*')">&#215</button>
       <button onclick="inputNum(7)">7</button>
       <button onclick="inputNum(8)">8</button>
       <button onclick="inputNum(9)">9</button>
-      <button onclick="operator('-')">-</button>
+      <button class="operadores" onclick="operator('-')">&#8722</button>
       <button onclick="inputNum(4)">4</button>
       <button onclick="inputNum(5)">5</button>
       <button onclick="inputNum(6)">6</button>
-      <button onclick="operator('+')">+</button>
+      <button class="operadores" onclick="operator('+')">+</button>
       <button onclick="inputNum(1)">1</button>
       <button onclick="inputNum(2)">2</button>
       <button onclick="inputNum(3)">3</button>
       <button onclick="calculate('')">=</button>
-      <button onclick="operator('%')"value="%" id="porcent">%</button>
+      <button class="operadores" onclick="operator('%')">&#37;</button>
       <button onclick="inputNum(0)">0</button>
-      <button onclick="inputNum('.')">.</button>
+      <button onclick="inputNum('.')">&#8226</button>
     </div>
   </div>
+  <script src="/script.js"></script>
   
 </body>
-<script src="/script.js"></script>
 </html>
