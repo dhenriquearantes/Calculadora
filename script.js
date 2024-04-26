@@ -3,7 +3,7 @@ let state = 1;
 let valueOne = "";
 let valueTwo = "";
 let operators = "";
-const visor = document.getElementById('display');
+let visor = document.getElementById('display')
 let lockVisor = false;
 
 
@@ -11,59 +11,104 @@ let lockVisor = false;
 function inputNum(num) {
   lockVisor = false;
   valueTemp += num
-  visor.value = valueTemp;
-}
-
-
-function erase() {
-  valueTemp = "";
-  state = 1;
-  valueOne = "";
-  valueTwo = "";
-  operators = "";
-  visor.value = valueTemp;
-  visor.placeholder = "0";
-  
-}
-
-function del() {
-  if (lockVisor == false){
-    valueTemp = valueTemp.slice(0, -1);
-    visor.value = valueTemp;
-  }
+  visorUpdate(valueTemp);
 }
 
 
 function operator(value) {
-  if (state == 1) {
+  if (state === 1) {
     operators = value;
     valueOne = valueTemp;
     state = 2;
     valueTemp = "";
-    visor.placeholder = valueTemp;
+    visorUpdate(valueTemp);
+
+    console.log("valor1: ", valueOne);
+    console.log("operador: ", value);
+    console.log("valor2: ", valueTwo);
+
   } 
-  if (state == 2 && valueOne > 0 && operators == "+") {
-      valueTwo = valueTemp;
-      sum();
-      valueTemp = ""
+  if (state === 2 && operators === "+" && valueOne > 0) {
+    valueTwo = valueTemp;
+    result = Number(valueOne) + Number(valueTwo);
+    visorUpdate(formatResult(result));
+  
+    valueOne = result;
+    valueTemp = "";
+    state = 3;
+
+    console.log("valor1: ", valueOne);
+    console.log("operador: ", value);
+    console.log("valor2: ", valueTwo);
 
   }
-    if (state == 2 && valueOne > 0 && operators == "-") {
-      valueTwo = valueTemp;
-      substrac();
+  
+  if (state === 2 && value === "-" && valueOne > 0) {
+    valueTwo = valueTemp;
+    result = Number(valueOne) - Number(valueTwo);
+    visorUpdate(formatResult(result));
+
+    valueOne = result
+    valueTemp = "";
+
+  }
+
+  if (state === 2 && value === "*" && valueOne > 0) {
+    valueTwo = valueTemp;
+    result = Number(valueOne) * Number(valueTwo);
+    visorUpdate(formatResult(result));
+
+    valueOne = result
+    valueTemp = "";
+
+  }  
+
+  if (state === 2 && value === "/"  && valueOne > 0) {
+    valueTwo = valueTemp;
+    result = Number(valueOne) / Number(valueTwo);
+    visorUpdate(formatResult(result));
+    
+    valueOne = result
+    valueTemp = "";
+
   }
 }
 
 function calculate() {
   let result = ""
 
-  if (state == 2) {
-    valueTwo = valueTemp;
+  if (state === 1) {
+    if (operators === "+") {
+      valueTemp = Number(valueTemp) + Number(valueTwo); 
+      visor.value= formatResult(valueTemp);     
+    }
+    if (operators === "-") {
+      valueTemp = Number(valueTemp) - Number(valueTwo);
+      visor.value = formatResult(valueTemp);      
+    }    
+    if (operators === "*") {
+      valueTemp = Number(valueTemp) * Number(valueTwo);
+      visor.value = formatResult(valueTemp);     
+    }
+    if (operators === "/") {
+      valueTemp = Number(valueTemp) / Number(valueTwo);
+      visor.value = formatResult(valueTemp);     
+    }
+    lockVisor = true
+
+    console.log("resultado: ", result);
+    console.log("valor1: ", valueOne);
+    console.log("operador: ", value);
+    console.log("valor2: ", valueTwo);
+
+  }
+
+  if (state === 2) {
+    valueTwo = valueTemp
     switch (operators) {
       case "+":
         result = Number(valueOne) + Number(valueTwo);
-        visor.value = "";
-        visor.placeholder = formatResult(result);
+        visor.value = formatResult(result);
         break;
       case "-":
         result = Number(valueOne) - Number(valueTwo);
@@ -84,24 +129,32 @@ function calculate() {
     state = 1;
     lockVisor = true
 
-  } else {
+  } 
+
+  if (state === 3) {
     if (operators === "+") {
-      valueTemp = Number(valueTemp) + Number(valueTwo); 
-      visor.value= formatResult(valueTemp);     
+      valueTwo = valueTemp;
+      result = Number(valueOne) + Number(valueTwo);
+      visorUpdate(formatResult(result));
+      state = 1;
+  
+      
+      valueTemp = result
+      valueOne = valueTemp
+      valueTwo = ""
     }
     if (operators === "-") {
-      valueTemp = Number(valueTemp) - Number(valueTwo);
-      visor.value = formatResult(valueTemp);      
-    }    
-    if (operators === "*") {
-      valueTemp = Number(valueTemp) * Number(valueTwo);
-      visor.value = formatResult(valueTemp);     
+      valueTwo = valueTemp;
+      result = Number(valueOne) - Number(valueTwo);
+      visorUpdate(formatResult(result));
+      state = 1;
+  
+      
+      valueTemp = result
+      valueOne = valueTemp
+      valueTwo = ""
     }
-    if (operators === "/") {
-      valueTemp = Number(valueTemp) / Number(valueTwo);
-      visor.value = formatResult(valueTemp);     
-    }
-    lockVisor = true
+
   }
 }
 
@@ -113,9 +166,8 @@ function sum() {
 
 function substrac() {
   result = Number(valueOne) - Number(valueTwo);
-  visor.value = "";
-  visor.placeholder = formatResult(result);
-  valueTemp = ''
+  visor.value = formatResult(result);
+  valueOne = result
 
 }
 
@@ -126,3 +178,31 @@ function formatResult(result) {
     return result.toFixed(2);
   }
 }
+
+function visorUpdate(update) {
+  document.getElementById('display').value = update;
+}
+
+function erase() {
+  valueTemp = "";
+  state = 1;
+  valueOne = "";
+  valueTwo = "";
+  operators = "";
+  visorUpdate(valueTemp);
+  visor.placeholder = "0";
+  
+}
+
+function del() {
+  if (lockVisor == false){
+    valueTemp = valueTemp.slice(0, -1);
+    visor.value = valueTemp;
+  }
+}
+
+
+// console.log("resultado: ", result);
+// console.log("valor1: ", valueOne);
+// console.log("operador: ", value);
+// console.log("valor2: ", valueTwo);
