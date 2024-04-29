@@ -33,6 +33,8 @@ function operator(value) {
   }
 
   if (value !== "=" && state === 2 && valueTemp > 0) {
+    tempOperator = value
+    operators = value;
     switch (operators) {
       case "+":
         sum();
@@ -51,7 +53,7 @@ function operator(value) {
       default:
         break;
     }
-    operators = value;
+
     valueTemp = "";
     
   }
@@ -137,6 +139,7 @@ function equals() {
   operators = "";
   lockVisor= true
 
+  console.log(tempOperator);
 }
 
 function erase() {
