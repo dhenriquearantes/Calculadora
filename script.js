@@ -3,6 +3,7 @@ let state = 1;
 let valueOne = "";
 let valueTwo = "";
 let operators = "";
+let tempOperator = "";
 let visor = document.getElementById('display')
 let lockVisor = false;
 
@@ -11,177 +12,166 @@ let lockVisor = false;
 function inputNum(num) {
   lockVisor = false;
   valueTemp += num
-  visorUpdate(valueTemp);
+  visorUpdate(0, valueTemp);
 }
 
 
 function operator(value) {
-  if (state === 1) {
+  if (state === 1 && valueTemp > 0 ) {
     operators = value;
     valueOne = valueTemp;
     state = 2;
     valueTemp = "";
-    visorUpdate(valueTemp);
-
-    console.log("valor1: ", valueOne);
-    console.log("operador: ", value);
-    console.log("valor2: ", valueTwo);
-
-  } 
-  if (state === 2 && operators === "+" && valueOne > 0) {
-    valueTwo = valueTemp;
-    result = Number(valueOne) + Number(valueTwo);
-    visorUpdate(formatResult(result));
-  
-    valueOne = result;
-    valueTemp = "";
-    state = 3;
-
-    console.log("valor1: ", valueOne);
-    console.log("operador: ", value);
-    console.log("valor2: ", valueTwo);
-
-  }
-  
-  if (state === 2 && value === "-" && valueOne > 0) {
-    valueTwo = valueTemp;
-    result = Number(valueOne) - Number(valueTwo);
-    visorUpdate(formatResult(result));
-
-    valueOne = result
-    valueTemp = "";
-
+    visorUpdate(0, valueTemp);
+    visorUpdate(1, valueTemp);
   }
 
-  if (state === 2 && value === "*" && valueOne > 0) {
-    valueTwo = valueTemp;
-    result = Number(valueOne) * Number(valueTwo);
-    visorUpdate(formatResult(result));
-
-    valueOne = result
-    valueTemp = "";
-
-  }  
-
-  if (state === 2 && value === "/"  && valueOne > 0) {
-    valueTwo = valueTemp;
-    result = Number(valueOne) / Number(valueTwo);
-    visorUpdate(formatResult(result));
-    
-    valueOne = result
-    valueTemp = "";
-
-  }
-}
-
-function calculate() {
-  let result = ""
-
-  if (state === 1) {
-    if (operators === "+") {
-      valueTemp = Number(valueTemp) + Number(valueTwo); 
-      visor.value= formatResult(valueTemp);     
-    }
-    if (operators === "-") {
-      valueTemp = Number(valueTemp) - Number(valueTwo);
-      visor.value = formatResult(valueTemp);      
-    }    
-    if (operators === "*") {
-      valueTemp = Number(valueTemp) * Number(valueTwo);
-      visor.value = formatResult(valueTemp);     
-    }
-    if (operators === "/") {
-      valueTemp = Number(valueTemp) / Number(valueTwo);
-      visor.value = formatResult(valueTemp);     
-    }
-    lockVisor = true
-
-    console.log("resultado: ", result);
-    console.log("valor1: ", valueOne);
-    console.log("operador: ", value);
-    console.log("valor2: ", valueTwo);
-
-  }
-
-  if (state === 2) {
-    valueTwo = valueTemp
+  if (value === "=" && state === 2 ) {
+    operators = value;
     switch (operators) {
       case "+":
-        result = Number(valueOne) + Number(valueTwo);
-        visor.value = formatResult(result);
+        sum()
         break;
       case "-":
-        result = Number(valueOne) - Number(valueTwo);
-        visor.value = formatResult(result);
+        substrac()
         break
       case "*":
-        result = Number(valueOne) * Number(valueTwo);
-        visor.value = formatResult(result);
+        multiplic()
         break     
       case "/":
-        result = Number(valueOne) / Number(valueTwo);
-        visor.value = formatResult(result);
-        break               
+        division()
+        break       
+      case "=":
+        equals()
+        break                   
       default:
         break;
     }
-    valueTemp = ""
-    state = 1;
     lockVisor = true
 
   } 
 
-  if (state === 3) {
-    if (operators === "+") {
-      valueTwo = valueTemp;
-      result = Number(valueOne) + Number(valueTwo);
-      visorUpdate(formatResult(result));
-      state = 1;
-  
-      
-      valueTemp = result
-      valueOne = valueTemp
-      valueTwo = ""
+   if (value != "=" && state === 2 && valueTemp > 0 ) {
+     switch (operators) {
+       case "+":
+        sum()
+        break;
+      case "-":
+        console.log("aqui");
+        substrac()
+        break
+      case "*":
+        multiplic()
+        break     
+      case "/":
+        division()
+        break                     
+      default:
+        break;
     }
-    if (operators === "-") {
-      valueTwo = valueTemp;
-      result = Number(valueOne) - Number(valueTwo);
-      visorUpdate(formatResult(result));
-      state = 1;
-  
-      
-      valueTemp = result
-      valueOne = valueTemp
-      valueTwo = ""
-    }
+
+
+  } 
 
   }
-}
+
 
 function sum() {
+  valueTwo = valueTemp;
   result = Number(valueOne) + Number(valueTwo);
-  visor.value = formatResult(result);
+  visor.value = "";
+  visor.placeholder = result;
   valueOne = result
+  valueTwo = ""
+
+  // tempOperator = operators
+
+  console.log("valor1: ", valueOne);
+  console.log("operador: ", operators);
+  console.log("valor2: ", valueTwo);
+  console.log("resultado: ", result);
+
+  valueTemp = ""
 }
 
 function substrac() {
+  valueTwo = valueTemp;
   result = Number(valueOne) - Number(valueTwo);
-  visor.value = formatResult(result);
+  visor.value = "";
+  visor.placeholder = result;
   valueOne = result
+  valueTwo = ""
+
+
+  // tempOperator = operators
+
+  console.log("valor1: ", valueOne);
+  console.log("operador: ", operators);
+  console.log("valor2: ", valueTwo);
+  console.log("resultado: ", result);
+
+  valueTemp = ""
+}
+
+function multiplic() {
+  valueTwo = valueTemp;
+  result = Number(valueOne) * Number(valueTwo);
+  visor.value = "";
+  visor.placeholder = result;
+  valueOne = result
+  valueTwo = ""
+
+  // tempOperator = operators
+
+  valueTemp = ""
+}
+
+function division() {
+  valueTwo = valueTemp;
+  result = Number(valueOne) / Number(valueTwo);
+  visor.value = "";
+  visor.placeholder = result;
+  valueOne = result
+  valueTwo = ""
+
+  // tempOperator = operators
+
+  valueTemp = ""
 
 }
 
-function formatResult(result) {
-  if (Number.isInteger(result)) {
-    return result.toString();
-  } else {
-    return result.toFixed(2);
+
+function equals() {
+  if (state === 1) {
+    
   }
+  valueOne = result
+  if (tempOperator === "+") {
+    result = Number(valueOne) + Number(valueTwo);
+    visor.value = result;
+  }
+  if (tempOperator === "-") {
+    result = Number(valueOne) - Number(valueTwo);
+    visor.value = result;
+  }  
+  if (tempOperator === "*") {
+    result = Number(valueOne) * Number(valueTwo);
+    visor.value = result;
+  }  
+  if (tempOperator === "/") {
+    result = Number(valueOne) / Number(valueTwo);
+    visor.value = result;
+  }  
+
 }
 
-function visorUpdate(update) {
-  document.getElementById('display').value = update;
-}
+// function formatResult(value) {
+//   if (Number.isInteger(value)) {
+//     return value.toString();
+//   } else {
+//     return value.toFixed(2);
+//   }
+// }
 
 function erase() {
   valueTemp = "";
@@ -189,17 +179,27 @@ function erase() {
   valueOne = "";
   valueTwo = "";
   operators = "";
-  visorUpdate(valueTemp);
-  visor.placeholder = "0";
+  visor.value = ""
+  visor.placeholder = "0"
   
 }
 
 function del() {
   if (lockVisor == false){
     valueTemp = valueTemp.slice(0, -1);
-    visor.value = valueTemp;
+    visorUpdate(0, valueTemp)
   }
 }
+
+function visorUpdate(option, update) {
+  if (option === "0") {
+    document.getElementById('display').value = update;
+  } else {
+    document.getElementById('display').placeholder = update;    
+  }
+}
+
+
 
 
 // console.log("resultado: ", result);
