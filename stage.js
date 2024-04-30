@@ -6,18 +6,11 @@ let operators = "";
 let tempOperator = "";
 let visor = document.getElementById('display');
 let lockVisor = false;
-let lockEquals = false;
 let result = 0;
 
 function inputNum(num) {
-
-  if (num === "." && valueTemp === "" ) {
-    valueTemp = "0."
-  } else {
-    valueTemp += num;
-  }
-
   lockVisor = false;
+  valueTemp += num;
 
   visorUpdate(0, valueTemp);
 }
@@ -25,21 +18,20 @@ function inputNum(num) {
 function operator(value) {
   if (state === 1 && valueTemp > 0) {
     operators = value;
-    tempOperator = value;
     valueOne = valueTemp;
     state = 2;
     valueTemp = "";
-    visorUpdate(0, valueOne);
-    visorUpdate(1, valueOne);
+    visorUpdate(0, valueTemp);
+    visorUpdate(1, valueTemp);
   }
 
   if (value === "=" && state === 2 && valueTemp !== "") {
     equals();
     lockVisor = true;
-    
   }
 
   if (value !== "=" && state === 2 && valueTemp > 0) {
+    tempOperator = value;
     switch (operators) {
       case "+":
         sum();
@@ -54,14 +46,12 @@ function operator(value) {
         division();
         break;
       case "%":
-        console.log("entrou");
         porcentage();
         break;
       default:
         break;
     }
     operators = value;
-    tempOperator = operators;
     valueTemp = "";
   }
 }
@@ -109,70 +99,37 @@ function division() {
 
 function porcentage() {
   valueTwo = valueTemp;
-  console.log(valueOne);
-  console.log(valueTwo);
   const percent = (Number(valueOne) * Number(valueTwo)) / 100;
   result = Number(valueOne) - percent;
   visorUpdate(0, result);
   valueOne = result;
   valueTwo = "";
   valueTemp = "";
-  console.log(result);
 }
 
 function equals() {
   valueTwo = valueTemp;
-  if (lockEquals = false) {
-    console.log(valueTemp);
-    switch (operators) {
-      case "+":
-        result = Number(valueOne) + Number(valueTwo);
-        break;
-      case "-":
-        result = Number(valueOne) - Number(valueTwo);
-        break;
-      case "*":
-        result = Number(valueOne) * Number(valueTwo);
-        break;
-      case "/":
-        result = Number(valueOne) / Number(valueTwo);
-        break; 
-      case "%":         
-        result = Number(result) - percent;
-        break;            
-      default:
-        return;
-  } 
-  lockEquals = true;
-} 
-  if (lockEquals = true) {
-    switch (tempOperator) {
-      case "+":
-        result = Number(valueOne) + Number(valueTwo);
-        break;
-      case "-":
-        result = Number(valueOne) - Number(valueTwo);
-        break;
-      case "*":
-        result = Number(valueOne) * Number(valueTwo);
-        break;
-      case "/":
-        result = Number(valueOne) / Number(valueTwo);
-        break;  
-      case "%":         
-        result = Number(result) - percent;
-        break;
-      default:
-        return;
-  }
+  switch (tempOperator) {
+    case "+":
+      result = Number(valueOne) + Number(valueTwo);
+      break;
+    case "-":
+      result = Number(valueOne) - Number(valueTwo);
+      break;
+    case "*":
+      result = Number(valueOne) * Number(valueTwo);
+      break;
+    case "/":
+      result = Number(valueOne) / Number(valueTwo);
+      break;
+    default:
+      return;
   }
 
   visorUpdate(0, result);
   valueOne = result;
   operators = "";
   lockVisor = true;
-  valueTemp = result
-
 }
 
 function erase() {
@@ -193,13 +150,12 @@ function del() {
 
 function visorUpdate(option, update) {
   if (option === 0) {
-    visor.value = formatNumber(update).substring(0,20);
+    visor.value = formatNumber(update);
   } else {
-    visor.placeholder = formatNumber(update).substring(0,20);
+    visor.placeholder = formatNumber(update);
   }
 }
 
 function formatNumber(number) {
-  return Number(number).toLocaleString("pt-BR");
+  return Number(number).toLocaleString('en-US');
 }
-

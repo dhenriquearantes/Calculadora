@@ -18,7 +18,7 @@
   <div class="calculator-container">
     <div class="display-container">
       <div class="display">
-        <input id="display" type="text" value="" placeholder="0" disabled readonly>
+        <input id="display" type="text" value="" placeholder="0" minlength="1" maxlength="8" disabled readonly>
       </div>
     </div>
     <div class="options">
@@ -38,7 +38,7 @@
       <button onclick="inputNum('2')">2</button>
       <button onclick="inputNum('3')">3</button>
       <button onclick="operator('=')">=</button>
-      <button class="operators" onclick="porcent('%')">&#37;</button>
+      <button class="operators" onclick="porcentage()">&#37;</button>
       <button onclick="inputNum('0')">0</button>
       <button onclick="inputNum('.')">&#8226</button>
     </div>
