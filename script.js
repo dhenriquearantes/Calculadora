@@ -15,164 +15,133 @@ function inputNum(num) {
 
     if (num === "." && valueTemp === "" ) {
       valueTemp = "0."
+    } else if (num === "." && valueTemp.includes(".")) {
+        return;
     } else {
       valueTemp += num;
     }
     
     lockVisor = false;
   
-    visorUpdate(0, valueTemp);
+    visor.value = formatNumber(valueTemp);
   }
 }
 
 function operator(value) {
-  if (state === 1 && valueTemp > 0) {
+  if (value !== "=" && value !== "%" && state === 1) {
     operators = value;
     tempOperator = value;
     valueOne = valueTemp;
     state = 2;
     valueTemp = "";
-    visorUpdate(0, valueOne);
-    visorUpdate(1, valueOne);
-  }
+    visor.value = formatNumber(valueOne);
 
-  if (value === "=" && state === 2 && valueTemp !== "") {
+  } else if (value === operators && state === 2) {
+
+    repeatOperation();
+
+  } else if (value !== "=" && value !== "%" && state === 2) {
+
+    lockEquals = false
+    tempOperator = value;
+    valueTemp = ""
+
+  } else if (value === "=" && state === 2) {
+
     equals();
     lockVisor = true;
-    
-  }
 
-  if (value !== "=" && state === 2 && valueTemp > 0) {
-    console.log(operators)
+  } else if (value === "%" ) {
+
+    state = 2
+    percentage()
+
+  }
+}
+
+function repeatOperation() {
+  if (valueOne !== "" && valueTemp !== "") {
     switch (operators) {
       case "+":
-        sum();
+        result = Number(valueOne) + Number(valueTemp);
         break;
       case "-":
-        subtract();
+        result = Number(valueOne) - Number(valueTemp);
         break;
       case "*":
-        multiply();
+        result = Number(valueOne) * Number(valueTemp);
         break;
       case "/":
-        division();
+        result = Number(valueOne) / Number(valueTemp);
         break;
       default:
-        break;
+        return;
     }
-    operators = value;
-    tempOperator = operators;
+    visor.value = formatNumber(result);
+    valueOne = result;
     valueTemp = "";
   }
 }
 
-function sum() {
-  valueTwo = valueTemp;
-  result = Number(valueOne) + Number(valueTwo);
-  // visorUpdate(0, result);
-  visorUpdate(1, result);
-  valueOne = result;
-  valueTwo = "";
-  valueTemp = "";
-  operators = "";
-}
-
-function subtract() {
-  valueTwo = valueTemp;
-  result = Number(valueOne) - Number(valueTwo);
-  visorUpdate(0, result);
-  valueOne = result;
-  valueTwo = "";
-  valueTemp = "";
-  operators = "";
-}
-
-function multiply() {
-  valueTwo = valueTemp;
-  result = Number(valueOne) * Number(valueTwo);
-  visorUpdate(0, result);
-  valueOne = result;
-  valueTwo = "";
-  valueTemp = "";
-  operators = "";
-}
-
-function division() {
-  valueTwo = valueTemp;
-  result = Number(valueOne) / Number(valueTwo);
-  visorUpdate(0, result);
-  valueOne = result;
-  valueTwo = "";
-  valueTemp = "";
-  operators = "";
-}
-
 function percentage() {
-  valueTwo = valueTemp
-  if (state === 1) {
-    result = valueTwo / 100;
-    visor.value = formatNumber(result);
-  } else if (state === 2) {
 
+  if (tempOperator !== "") {
+    valueTwo = valueTemp;
     const percent = (Number(valueOne) * Number(valueTwo)) / 100;
-
+  
     if (operators === "+") {
       result = Number(valueOne) + percent;
-      visor.value = formatNumber(result);
-      valueOne = result
-      valueTemp = ""
-      console.log(operators);
-      
-
-    }
-
-    if (operators === "-") {
+    } else if (operators === "-") {
       result = Number(valueOne) - percent;
-      visor.value = formatNumber(result);
-
+    } else if (operators === "*") {
+      result = percent;
+    } else if (operators === "/") {
+      result = Number(valueOne) / (Number(valueTwo) / 100);
     }
+  
+    state = 1;
+    visor.value = formatNumber(result);
+    valueTwo = "";
+    valueOne = result;
+    valueTemp = result;
+  
+    console.log(tempOperator);
+  } else {
+    state = 2
 
-    if (operators === "*") {
-      result = Number(valueOne) * percent;
-      visor.value = formatNumber(result);
+    result = visor.value / 100;
+    visor.value = formatNumber(result);
 
-    }
-    if (operators === "/") {
-      result = Number(valueOne) / percent;
-      visor.value = formatNumber(result);
-
-    }
+    valueTemp = "";
+    valueOne = result;
   }
 
-  visorUpdate(0, result);
-  valueOne = result;
-  valueTwo = "";
-  valueTemp = "";
+
 }
 
+
+
 function equals() {
-  valueTwo = valueTemp;
-  if (lockEquals == false) {
-    console.log(valueTemp);
-    switch (operators) {
+  if (lockEquals === false) {
+    switch (tempOperator) {
       case "+":
-        result = Number(valueOne) + Number(valueTwo);
+        result = Number(valueOne) + Number(valueTemp);
         break;
       case "-":
-        result = Number(valueOne) - Number(valueTwo);
+        result = Number(valueOne) - Number(valueTemp);
         break;
       case "*":
-        result = Number(valueOne) * Number(valueTwo);
+        result = Number(valueOne) * Number(valueTemp);
         break;
       case "/":
-        result = Number(valueOne) / Number(valueTwo);
-        break;          
+        result = Number(valueOne) / Number(valueTemp);
+        break;
       default:
         return;
-  } 
-  lockEquals = true;
-} 
-  if (lockEquals == true) {
+    }
+    valueTwo = visor.value
+    lockEquals = true;
+  } else {
     switch (tempOperator) {
       case "+":
         result = Number(valueOne) + Number(valueTwo);
@@ -185,46 +154,57 @@ function equals() {
         break;
       case "/":
         result = Number(valueOne) / Number(valueTwo);
-        break;  
+        break;
       default:
         return;
-  }
-  }
+    }
 
-  visor.value = "";
-  visor.placeholder = formatNumber(result);
-  valueOne = result;
-  operators = "";
+  }
+  visor.value =  formatNumber(result)
+  valueOne = result
   lockVisor = true;
-  valueTemp = result
+  valueTemp = ""
+
+  console.log("valueOne:", valueOne);
+  console.log("valueTwo:", valueTwo);
+  console.log("result:", result);
+
 }
 
 function erase() {
-  valueTemp = "";
-  state = 1;
-  valueOne = "";
-  valueTwo = "";
-  operators = "";
-  visorUpdate(0, "0");
+  location.reload();
+
+  // valueTemp = "";
+  // valueOne = "";
+  // valueTwo = "";
+  // operators = "";
+  // state = 1;
+  // visor.value = "0");
+
 }
 
 function del() {
   if (lockVisor === false) {
     valueTemp = valueTemp.slice(0, -1);
-    visorUpdate(0, valueTemp);
+    visor.value = formatNumber(valueTemp);
   }
 }
 
-function visorUpdate(option, update) {
-  if (update.length <= 9) {
-    if (option === 0) {
-      visor.value = formatNumber(update);
-    } else {
-      visor.placeholder = formatNumber(update);
-    }
-  }
-}
 
 function formatNumber(number) {
-  return Number(number).toLocaleString("pt-BR");
+  var formattedNumber = Number(number).toLocaleString("pt-BR").replace(/,/g, ".");
+  
+  if (number.length <= 6 ) {
+    visor.style.fontSize = '84px';
+  } else if ( number.length === 7 ) {
+    visor.style.fontSize = '68px';
+  } else if ( number.length === 8 ) {
+    visor.style.fontSize = '64px';
+  } else if ( number.length === 9 ) {
+    visor.style.fontSize = '56px';
+  }
+  
+  return formattedNumber;
 }
+
+

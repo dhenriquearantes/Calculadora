@@ -36,7 +36,7 @@ body{
   color: black;
   text-align: end;
   font-weight: 300;
-  font: 48px "Roboto", arial, sans-serif;
+  font: 84px "Roboto", arial, sans-serif;
 
   padding: 100px 20px 10px 10px;
   box-sizing: border-box;
@@ -46,7 +46,7 @@ body{
   color: black;
   text-align: end;
   font-weight: 300;
-  font: 48px "Roboto", arial, sans-serif;
+  font: 84px "Roboto", arial, sans-serif;
 }
 
 .options button {
